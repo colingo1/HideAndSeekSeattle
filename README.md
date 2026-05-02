@@ -1,5 +1,10 @@
 Scripts and display logic for playing Jet Lag Hide and Seek in the Seattle area.
 
+Maps:
+[Seattle Map](docs/seattle.html)
+
+[Seattle Metro Area Map](docs/seattle_metro.html)
+
 Scripts:
 
 - kc_station_scraper.py: pulls Seattle area transit stations across multiple transportation methods,
