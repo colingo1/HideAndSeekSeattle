@@ -63,5 +63,5 @@ def populate_map(seattle_only, output_name):
     MeasureControl(primary_length_unit="miles", secondary_length_unit="meters").add_to(base_map)
     base_map.save(output_name)
 
-populate_map(True, "web/seattle.html")
-populate_map(False, "web/seattle_metro.html")
+populate_map(True, "docs/seattle.html")
+populate_map(False, "docs/seattle_metro.html")
