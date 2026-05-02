@@ -5,7 +5,6 @@ import random
 
 
 quarter_mile_meters = 402.336
-ONLY_INCLUDE_SEATTLE = False
 
 default_off = ["Seattle", "Trolley", "Sound Transit Express"]
 custom_icons = {
@@ -27,7 +26,7 @@ def generate_programmatic_random_color(name):
     color_code = f"#{random.randrange(255):2x}{random.randrange(255):2x}{random.randrange(255):2x}"
     return color_code
 
-def populate_map():
+def populate_map(seattle_only, output_name):
     base_map = folium.Map(location = (47.6061, -122.3328))
     stops = pd.read_csv("stops.csv")
 
@@ -36,7 +35,7 @@ def populate_map():
 
 
     for i, stop in stops.iterrows():
-        if ONLY_INCLUDE_SEATTLE and stop["City"] != "Seattle":
+        if seattle_only and stop["City"] != "Seattle":
             continue
         stop_color = generate_programmatic_random_color(stop["Route"])
 
@@ -62,6 +61,7 @@ def populate_map():
     folium.LayerControl(hideSingleBase=True).add_to(base_map)
     LocateControl().add_to(base_map)
     MeasureControl(primary_length_unit="miles", secondary_length_unit="meters").add_to(base_map)
-    base_map.save("seattle.html" if ONLY_INCLUDE_SEATTLE else "seattle_metro.html")
+    base_map.save(output_name)
 
-populate_map()
+populate_map(True, "web/seattle.html")
+populate_map(False, "web/seattle_metro.html")
