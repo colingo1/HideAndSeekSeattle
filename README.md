@@ -1,6 +1,7 @@
 Scripts and display logic for playing Jet Lag Hide and Seek in the Seattle area.
 
 Maps:
+
 [Seattle Map](docs/seattle.html)
 
 [Seattle Metro Area Map](docs/seattle_metro.html)
