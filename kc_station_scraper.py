@@ -101,15 +101,6 @@ def parse_all_networks():
     
     return station_df
 
-def clean_up_dataframe(station_df):
-
-    station_df["Lat"] = station_df["Coordinates"].str.split(",").str[0].str.strip()
-    station_df["Lon"] = station_df["Coordinates"].str.split(",").str[1].str.strip()
-    station_df.drop_duplicates(subset=["Name", "Route"], inplace=True)
-    station_df.drop(columns=["OneBusAway Stop ID", "Parking Spots", "Coordinates"], inplace=True)
-
-
 station_df = parse_all_networks()
-clean_up_dataframe(station_df)
 print(station_df)
-station_df.to_csv("stops.csv")
+station_df.to_csv("stops_raw.csv", index=False)

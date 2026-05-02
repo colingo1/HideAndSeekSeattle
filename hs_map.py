@@ -5,6 +5,8 @@ import random
 
 
 quarter_mile_meters = 402.336
+ONLY_INCLUDE_SEATTLE = False
+
 default_off = ["Seattle", "Trolley", "Sound Transit Express"]
 custom_icons = {
     "Light Rail" : "train",
@@ -34,6 +36,8 @@ def populate_map():
 
 
     for i, stop in stops.iterrows():
+        if ONLY_INCLUDE_SEATTLE and stop["City"] != "Seattle":
+            continue
         stop_color = generate_programmatic_random_color(stop["Route"])
 
         folium.Marker(
@@ -58,6 +62,6 @@ def populate_map():
     folium.LayerControl(hideSingleBase=True).add_to(base_map)
     LocateControl().add_to(base_map)
     MeasureControl(primary_length_unit="miles", secondary_length_unit="meters").add_to(base_map)
-    base_map.save("seattle.html")
+    base_map.save("seattle.html" if ONLY_INCLUDE_SEATTLE else "seattle_metro.html")
 
 populate_map()
