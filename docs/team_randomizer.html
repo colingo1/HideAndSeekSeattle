@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <body>
+
+    <h1>Team Generator</h1>
+
+    <div id="player-list">
+      <h4> Players</h4>
+    </div>
+
+    <h4> Optional Constraints</h4>
+    <div id="constraint-list">
+      <div class="constraint">
+        <input type="checkbox" value = "split_couples"> Split couples
+        <input type="checkbox" value = "split_gender"> Balance genders
+      </div>
+    </div>
+
+    <button onclick="getTeams()"> Generate Teams</button>
+
+    <div id="team-a">
+    </div>
+    <div id="team-b">
+    </div>
+    <script>
+      const PLAYERS = {
+        "Colin" : {"Gender" : "M", "Partner": "Mae"},
+        "Mae" : {"Gender" : "F", "Partner": "Colin"},
+        "Alex" : {"Gender" : "M", "Partner": "Hannah"},
+        "Hannah" : {"Gender" : "F", "Partner": "Alex"},
+        "Matthew" : {"Gender" : "M", "Partner": "Gabby"},
+        "Gabby" : {"Gender" : "F", "Partner": "Matthew"},
+        "Rishi" : {"Gender" : "M"},
+        "Katie" : {"Gender" : "F"},
+      }
+
+      //RENDERING LOGIC
+
+      for (const player of Object.keys(PLAYERS)) {
+        const playerItem = document.createElement("div")
+        playerItem.className = "player"
+        playerItem.innerHTML = 
+          `
+          <input type="checkbox" value = "${player}" checked> ${player}
+          `
+        document.getElementById("player-list").appendChild(playerItem)
+      }
+
+
+      //TEAM GENERATION LOGIC
+      function getTeams() {
+        const participatingPlayers = [...document.querySelectorAll("#player-list input:checked")]
+            .map(checkbox => checkbox.value);
+        const constraints = new Set([...document.querySelectorAll("#constraint-list input:checked")]
+            .map(checkbox => checkbox.value))
+
+        let teamA, teamB;
+        for (let attempt = 0; attempt < 1000; attempt++) {
+          shuffle(participatingPlayers)
+          teamA = participatingPlayers.slice(0,participatingPlayers.length/2);
+          teamB = participatingPlayers.slice(participatingPlayers.length/2);
+          if(checkConstraints(teamA, teamB, constraints)) {
+            break;
+          }
+        }
+
+        renderResults(teamA, "Team A", "team-a");
+        renderResults(teamB, "Team B", "team-b");
+
+        
+      }
+
+      function renderResults(team, teamName, teamId) {
+        const teamContainer = document.getElementById(teamId);
+        teamContainer.replaceChildren();
+        const teamHeader = document.createElement("h4")
+        teamHeader.innerText = teamName;
+        teamContainer.appendChild(teamHeader)
+        for (const teamMember of team) {
+          const memberDiv = document.createElement("div")
+          memberDiv.className = "player"
+          memberDiv.innerText = teamMember
+          teamContainer.appendChild(memberDiv)
+        }
+      }
+
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          // Generate a random index from 0 to i
+          const j = Math.floor(Math.random() * (i + 1));
+          // Swap elements array[i] and array[j]
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      function checkConstraints(teamA, teamB, constraints) {
+
+
+        if(constraints.has("split_couples")) {
+          for (const member of teamA) {
+            const memberPartner = PLAYERS[member]?.Partner;
+            if (memberPartner && teamA.includes(memberPartner)) {
+              return false;
+            }
+          }
+          for (const member of teamB) {
+            const memberPartner = PLAYERS[member]?.Partner;
+            if (memberPartner && teamB.includes(memberPartner)) {
+              return false;
+            }
+          }
+        }
+        if(constraints.has("split_gender")) {
+          let teamA_m = teamA.filter(player => PLAYERS[player].Gender == "M").length
+          let teamA_f = teamA.filter(player => PLAYERS[player].Gender == "F").length
+          let teamB_m = teamB.filter(player => PLAYERS[player].Gender == "M").length
+          let teamB_f = teamB.filter(player => PLAYERS[player].Gender == "F").length
+
+          if((Math.abs(teamA_m - teamB_m) > 1) || (Math.abs(teamA_f - teamB_f) > 1)) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+      
+    </script>
+  </body>
+</html>
+
