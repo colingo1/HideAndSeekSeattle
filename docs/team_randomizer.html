@@ -1,26 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Generator</title>
+    <link href="style.css" rel="stylesheet"/>
+    <style>
+
+      /* Checkboxes */
+      label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 4px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: background 0.12s;
+      }
+
+      label:hover { background: #f4f4f5; }
+
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #18181b;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      /* Button */
+      button {
+        width: 100%;
+        padding: 14px;
+        background: #18181b;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 12px;
+        transition: background 0.15s;
+      }
+
+      button:hover { background: #3f3f46; }
+      button:active { background: #52525b; }
+
+      /* Teams */
+      .teams {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .team-card {
+        background: #fff;
+        border: 1px solid #e4e4e7;
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      .team-card h4 {
+        margin-bottom: 10px;
+        color: #18181b;
+      }
+
+      .player {
+        padding: 7px 0;
+        font-size: 0.92rem;
+        border-bottom: 1px solid #f4f4f5;
+      }
+
+      .player:last-child { border-bottom: none; }
+    </style>
+  </head>
   <body>
 
     <h1>Team Generator</h1>
 
+    <section>
+    <h4> Players</h4>
     <div id="player-list">
-      <h4> Players</h4>
     </div>
+    </section>
 
+    <section>
     <h4> Optional Constraints</h4>
     <div id="constraint-list">
-      <div class="constraint">
-        <input type="checkbox" value = "split_couples"> Split couples
-        <input type="checkbox" value = "split_gender"> Balance genders
-      </div>
+      <label><input type="checkbox" value="split_couples"> Split couples</label>
+      <label><input type="checkbox" value="split_gender"> Balance genders</label>
     </div>
+    </section>
 
     <button onclick="getTeams()"> Generate Teams</button>
 
-    <div id="team-a">
-    </div>
-    <div id="team-b">
+    <div class="teams">
+      <div id="team-a" class="team-card" style="display:none"></div>
+      <div id="team-b" class="team-card" style="display:none"></div>
     </div>
     <script>
       const PLAYERS = {
@@ -37,7 +114,7 @@
       //RENDERING LOGIC
 
       for (const player of Object.keys(PLAYERS)) {
-        const playerItem = document.createElement("div")
+        const playerItem = document.createElement("label")
         playerItem.className = "player"
         playerItem.innerHTML = 
           `
@@ -72,6 +149,7 @@
 
       function renderResults(team, teamName, teamId) {
         const teamContainer = document.getElementById(teamId);
+        teamContainer.style.display = "block";
         teamContainer.replaceChildren();
         const teamHeader = document.createElement("h4")
         teamHeader.innerText = teamName;
