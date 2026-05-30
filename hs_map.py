@@ -6,7 +6,7 @@ import random
 
 quarter_mile_meters = 402.336
 ADD_DEFAULT_OFF = False
-SHOW_MARKERS = True
+FOR_PRINT = False
 
 default_off = ["Seattle", "Trolley", "Sound Transit Express"]
 custom_icons = {
@@ -39,9 +39,12 @@ def populate_map(seattle_only, output_name):
     for i, stop in stops.iterrows():
         if (seattle_only and stop["City"] != "Seattle") or (stop["Route Type"] in default_off and not ADD_DEFAULT_OFF):
             continue
-        stop_color = generate_programmatic_random_color(stop["Route"])
+        if not FOR_PRINT:
+            stop_color = generate_programmatic_random_color(stop["Route"])
+        else:
+            stop_color = "gray"
 
-        if SHOW_MARKERS:
+        if not FOR_PRINT:
             folium.Marker(
                 location = (stop["Lat"], stop["Lon"]),
                 popup = folium.Popup( "<b>" + stop["Route"] + "</b><br />" + stop["Name"]),
@@ -54,12 +57,12 @@ def populate_map(seattle_only, output_name):
         folium.Circle(
             location = (stop["Lat"], stop["Lon"]),
             radius = quarter_mile_meters,
-            stroke = True,
+            stroke = not FOR_PRINT,
             color = stop_color,
             fill_color = stop_color,
             fill = False,
             opacity = 1,
-            fillOpacity = 0.2
+            fillOpacity = 0.2 if not FOR_PRINT else 0.4
         ).add_to(route_layers[stop["Route Type"]])
     folium.LayerControl(hideSingleBase=True).add_to(base_map)
     LocateControl().add_to(base_map)
