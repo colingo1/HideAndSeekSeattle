@@ -1,33 +1,48 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: system-ui, sans-serif;
-    background: #f4f4f5;
-    color: #18181b;
-    padding: 24px 16px 48px;
-    max-width: 480px;
-    margin: 0 auto;
-    }
+  font-family: system-ui, sans-serif;
+  background: #f4f4f5;
+  color: #18181b;
+  padding: 24px 16px 48px;
+  max-width: 960px;
+  margin: 0 auto;
+}
 
 h1 {
-font-size: 1.6rem;
-font-weight: 700;
-margin-bottom: 20px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
 section {
-background: #fff;
-border: 1px solid #e4e4e7;
-border-radius: 12px;
-padding: 16px;
-margin-bottom: 12px;
+  background: #fff;
+  border: 1px solid #e4e4e7;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
 }
 
 h4 {
-font-size: 0.7rem;
-font-weight: 600;
-text-transform: uppercase;
-letter-spacing: 0.08em;
-color: #71717a;
-margin-bottom: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #71717a;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+ul {
+  padding-left: 18px;
+}
+
+a {
+  color: #1b75d0 
 }
